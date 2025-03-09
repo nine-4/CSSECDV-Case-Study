@@ -10,6 +10,10 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.nio.charset.StandardCharsets;
+import java.math.BigInteger;
 
 
 public class Main {
@@ -55,11 +59,11 @@ public class Main {
         sqlite.addProduct("Scanner", 10, 100.0);
 
         // Add sample users
-        sqlite.addUser("admin", "qwerty1234" , 5);
-        sqlite.addUser("manager", "qwerty1234", 4);
-        sqlite.addUser("staff", "qwerty1234", 3);
-        sqlite.addUser("client1", "qwerty1234", 2);
-        sqlite.addUser("client2", "qwerty1234", 2);
+        sqlite.addUser("admin", this.hashPassword("qwerty1234") , 5);
+        sqlite.addUser("manager", this.hashPassword("qwerty1234"), 4);
+        sqlite.addUser("staff", this.hashPassword("qwerty1234"), 3);
+        sqlite.addUser("client1", this.hashPassword("qwerty1234"), 2);
+        sqlite.addUser("client2", this.hashPassword("qwerty1234"), 2);
 
 
         // Get users
@@ -125,6 +129,24 @@ public class Main {
             System.out.println("Login Failed!");
 
         return isValid;
+    }
+
+    public String hashPassword(String password) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            byte[] hash = md.digest(password.getBytes(StandardCharsets.UTF_8));
+            BigInteger number = new BigInteger(1, hash);
+            StringBuilder hexString = new StringBuilder(number.toString(16));
+
+            // pad with leading zeros to ensure 64-character hash
+            while (hexString.length() < 64) {
+                hexString.insert(0, '0');
+            }
+
+            return hexString.toString();
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException("Error hashing password", e);
+        }
     }
     
 }

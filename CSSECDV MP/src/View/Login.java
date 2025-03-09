@@ -97,7 +97,9 @@ public class Login extends javax.swing.JPanel {
         String password = frame.loginPnl.passwordFld.getText();
     
         // successful login
-        if (frame.main.validateLogin(username, password)) {
+        if (frame.main.validateLogin(username.toLowerCase(), // ensures that uppercase letters inputted is still valid
+     frame.main.hashPassword(password)) // hashes inputted password first before comparing to the hashed password in DB
+            ) {
             frame.loginPnl.errorMessage.setText("");
             jPane.showMessageDialog(this, "Login Successful!");
             frame.mainNav();

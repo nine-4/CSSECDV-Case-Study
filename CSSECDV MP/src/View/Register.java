@@ -156,7 +156,8 @@ public class Register extends javax.swing.JPanel {
         
         if (isUsernameValid && isPasswordValid && isConfPasswordValid){
             frame.registerAction(usernameFld.getText().toLowerCase(),   // sanitizes username to lower case before storing in DB
-                    passwordFld.getText(), confpassFld.getText());
+                    frame.main.hashPassword(passwordFld.getText()), // hashes password before storing in DB
+                    confpassFld.getText());
             jPane.showMessageDialog(this, "Register Successful!");
             frame.loginNav();
         }
