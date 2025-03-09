@@ -107,13 +107,18 @@ public class Login extends javax.swing.JPanel {
             frame.loginPnl.errorMessage.setText("Incorrect username/password!");
         }
         
-        // makes sure that fields are left blanked every time
+        // makes sure that fields are resetted every time
         frame.loginPnl.usernameFld.setText("");
         frame.loginPnl.passwordFld.setText("");
     }//GEN-LAST:event_loginBtnActionPerformed
 
     private void registerBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerBtnActionPerformed
         frame.registerNav();
+        
+        // makes sure that fields are resetted every time
+        frame.loginPnl.errorMessage.setText("");
+        frame.loginPnl.usernameFld.setText("");
+        frame.loginPnl.passwordFld.setText("");
     }//GEN-LAST:event_registerBtnActionPerformed
 
 
