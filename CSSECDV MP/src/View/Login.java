@@ -1,9 +1,12 @@
 
 package View;
 
+import javax.swing.*;
+
 public class Login extends javax.swing.JPanel {
 
     public Frame frame;
+    public JOptionPane jPane;
     
     public Login() {
         initComponents();
@@ -15,7 +18,7 @@ public class Login extends javax.swing.JPanel {
 
         jLabel1 = new javax.swing.JLabel();
         usernameFld = new javax.swing.JTextField();
-        passwordFld = new javax.swing.JTextField();
+        passwordFld = new javax.swing.JPasswordField();
         registerBtn = new javax.swing.JButton();
         loginBtn = new javax.swing.JButton();
         errorMessage = new javax.swing.JLabel();
@@ -93,10 +96,13 @@ public class Login extends javax.swing.JPanel {
         String username = frame.loginPnl.usernameFld.getText();
         String password = frame.loginPnl.passwordFld.getText();
     
+        // successful login
         if (frame.main.validateLogin(username, password)) {
             frame.loginPnl.errorMessage.setText("");
+            jPane.showMessageDialog(this, "Login Successful!");
             frame.mainNav();
         } 
+        
         else {
             frame.loginPnl.errorMessage.setText("Incorrect username/password!");
         }
@@ -111,7 +117,7 @@ public class Login extends javax.swing.JPanel {
     private javax.swing.JLabel errorMessage;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JButton loginBtn;
-    private javax.swing.JTextField passwordFld;
+    private javax.swing.JPasswordField passwordFld;
     private javax.swing.JButton registerBtn;
     private javax.swing.JTextField usernameFld;
     // End of variables declaration//GEN-END:variables
