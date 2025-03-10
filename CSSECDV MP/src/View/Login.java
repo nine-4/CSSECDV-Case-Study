@@ -95,18 +95,16 @@ public class Login extends javax.swing.JPanel {
         
         String username = frame.loginPnl.usernameFld.getText();
         String password = frame.loginPnl.passwordFld.getText();
+
+        String loginResponse = frame.main.validateLogin(username.toLowerCase(), frame.main.hashPassword(password));
     
         // successful login
-        if (frame.main.validateLogin(username.toLowerCase(), // ensures that uppercase letters inputted is still valid
-     frame.main.hashPassword(password)) // hashes inputted password first before comparing to the hashed password in DB
-            ) {
-            frame.loginPnl.errorMessage.setText("");
-            jPane.showMessageDialog(this, "Login Successful!");
-            frame.mainNav();
-        } 
-        
-        else {
-            frame.loginPnl.errorMessage.setText("Incorrect username/password!");
+        if (loginResponse.equals("SUCCESS")) {
+        frame.loginPnl.errorMessage.setText("");
+        jPane.showMessageDialog(this, "Login Successful!");
+        frame.mainNav();
+        } else {
+        frame.loginPnl.errorMessage.setText(loginResponse);
         }
         
         // makes sure that fields are resetted every time
