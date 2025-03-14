@@ -118,8 +118,6 @@ public class Main {
     public String validateLogin(String username, String password) {
         long currentTime = System.currentTimeMillis();
 
-
-     
         ArrayList<User> users = sqlite.getUsers();
         for (User user : users) {
             if (user.getUsername().equals(username)) {
@@ -141,13 +139,13 @@ public class Main {
                         lockoutTimestamp = currentTime;
                         return "Too many failed attempts. Account locked for 5 minutes.";
                     }
-                return "Incorrect Login Credentials1!";
+                return "Username/password is incorrect!";
                 }
             }
         }
          
         
-        return "Incorrect Login Credentials2!";
+        return "Username/password is incorrect!";
     }
 
     public String hashPassword(String password) {
