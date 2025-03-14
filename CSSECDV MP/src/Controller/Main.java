@@ -116,40 +116,39 @@ public class Main {
     }
     
     public String validateLogin(String username, String password) {
-    long currentTime = System.currentTimeMillis();
-    
-    if (failedAttempts >= MAX_ATTEMPTS) {
-        if (currentTime - lockoutTimestamp < LOCKOUT_DURATION) {
-            return "Too many failed attempts. Account locked for 5 minutes.";
-        } else {
-            failedAttempts = 0; // Reset after lockout time has passed
-        }
-    }
-    
-    ArrayList<User> users = sqlite.getUsers();
-    for (User user : users) {
-        if (user.getUsername().equals(username)) {
-            if (user.getPassword().equals(password)) {
-                failedAttempts = 0; // Reset on successful login
-                return "SUCCESS"; // Indicate a successful login
-            } else {
-                failedAttempts++;
+        long currentTime = System.currentTimeMillis();
+
+
+     
+        ArrayList<User> users = sqlite.getUsers();
+        for (User user : users) {
+            if (user.getUsername().equals(username)) {
                 if (failedAttempts >= MAX_ATTEMPTS) {
-                    lockoutTimestamp = currentTime;
-                    return "Too many failed attempts. Account locked for 5 minutes.";
+                    if (currentTime - lockoutTimestamp < LOCKOUT_DURATION) {
+                        return "Too many failed attempts. Account locked for 5 minutes.";
+                    }  else {
+                        failedAttempts = 0; // Reset after lockout time has passed
+                    }
                 }
+                
+                if (user.getPassword().equals(password)) {
+                    failedAttempts = 0; // Reset on successful login
+                    return "SUCCESS"; // Indicate a successful login
+                } 
+                else {
+                    failedAttempts++;
+                    if (failedAttempts >= MAX_ATTEMPTS) {
+                        lockoutTimestamp = currentTime;
+                        return "Too many failed attempts. Account locked for 5 minutes.";
+                    }
                 return "Incorrect Login Credentials1!";
+                }
             }
         }
+         
+        
+        return "Incorrect Login Credentials2!";
     }
-    
-    failedAttempts++;
-    if (failedAttempts >= MAX_ATTEMPTS) {
-        lockoutTimestamp = currentTime;
-        return "Too many failed attempts. Account locked for 5 minutes.";
-    }
-    return "Incorrect Login Credentials2!";
-}
 
     public String hashPassword(String password) {
         try {
