@@ -116,6 +116,9 @@ public class Login extends javax.swing.JPanel {
         
         String username = frame.loginPnl.usernameFld.getText();
         String password = frame.loginPnl.passwordFld.getText();
+        
+        username = frame.main.sanitizeInput(username);
+        password = frame.main.sanitizeInput(password);
 
         String loginResponse = frame.main.validateLogin(username.toLowerCase(), frame.main.hashPassword(password));
     
@@ -144,6 +147,8 @@ public class Login extends javax.swing.JPanel {
 
     private void forgotBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_forgotBtnActionPerformed
         String username = frame.loginPnl.usernameFld.getText();
+        
+        username = frame.main.sanitizeInput(username);
         
         if (username.equals("")){
             jPane.showMessageDialog(this, "Enter your username first!", "ERROR", jPane.ERROR_MESSAGE);

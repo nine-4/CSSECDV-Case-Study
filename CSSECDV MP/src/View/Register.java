@@ -145,7 +145,7 @@ public class Register extends javax.swing.JPanel {
             password.matches(".*[A-Z].*") &&    // at least one upper case
             password.matches(".*[a-z].*") &&    // at least one lower case
             password.matches(".*\\d.*") &&      // at least one digit
-            password.matches(".*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?].*") // at least one symbol
+            password.matches(".*[!@#$%^*_+\\-=\\[\\]{}:\\\\\\|,.?/].*") // at least one symbol
             ){
             isPasswordValid = true;
         }

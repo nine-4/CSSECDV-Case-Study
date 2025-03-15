@@ -166,4 +166,13 @@ public class Main {
         }
     }
     
+    public String sanitizeInput(String input) {
+        if (input == null) return "";
+
+        // Remove script-related characters
+        input = input.replaceAll("[<>\"'%;()&]", ""); // Remove potentially dangerous characters
+
+        return input;
+    }
+    
 }
