@@ -175,4 +175,14 @@ public class Main {
         return input;
     }
     
+    public int getRoleFromUsername(String username){
+        int role = -1;
+        ArrayList<User> users = sqlite.getUsers();
+        for (User user : users) {
+            if (user.getUsername().equals(username)) {
+                role = user.getRole();
+            }
+        }
+        return role;
+    }
 }
