@@ -244,8 +244,37 @@ public class Frame extends javax.swing.JFrame {
         this.setVisible(true);
     }
     
-    public void mainNav(){
+    public void mainNav(int role){
         frameView.show(Container, "homePnl");
+        
+        adminBtn.setVisible(false);
+        managerBtn.setVisible(false);
+        staffBtn.setVisible(false);
+        clientBtn.setVisible(false);
+        
+        if (role == 2){
+            clientBtn.setVisible(true);
+            clientHomePnl.showPnl("home");
+            contentView.show(Content, "clientHomePnl");
+        }
+        
+        if (role == 3){
+            staffBtn.setVisible(true);
+            staffHomePnl.showPnl("home");
+            contentView.show(Content, "staffHomePnl");
+        }
+        
+        if (role == 4){
+            managerBtn.setVisible(true);
+            managerHomePnl.showPnl("home");
+            contentView.show(Content, "managerHomePnl");
+        }
+        
+        if (role == 5){
+            adminBtn.setVisible(true);
+            adminHomePnl.showPnl("home");
+            contentView.show(Content, "adminHomePnl");
+        }
     }
     
     public void loginNav(){

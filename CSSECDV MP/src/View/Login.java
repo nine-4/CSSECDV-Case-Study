@@ -124,11 +124,13 @@ public class Login extends javax.swing.JPanel {
     
         // successful login
         if (loginResponse.equals("SUCCESS")) {
-        frame.loginPnl.errorMessage.setText("");
-        jPane.showMessageDialog(this, "Login Successful!");
-        frame.mainNav();
+            int role = frame.main.getRoleFromUsername(username);
+            
+            frame.loginPnl.errorMessage.setText("");
+            jPane.showMessageDialog(this, "Login Successful!");
+            frame.mainNav(role);
         } else {
-        frame.loginPnl.errorMessage.setText(loginResponse);
+            frame.loginPnl.errorMessage.setText(loginResponse);
         }
         
         // makes sure that fields are resetted every time
