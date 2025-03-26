@@ -185,4 +185,16 @@ public class Main {
         }
         return role;
     }
+    
+    public User getUserFromUsername(String username) {
+        ArrayList<User> users = sqlite.getUsers(); 
+
+        for (User user : users) {
+            if (user.getUsername().equalsIgnoreCase(username)) {
+                return user; 
+            }
+        }
+    
+        return null;
+    }
 }

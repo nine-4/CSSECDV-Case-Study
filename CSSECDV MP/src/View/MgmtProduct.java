@@ -5,6 +5,7 @@
  */
 package View;
 
+import Controller.SessionManager;
 import Controller.SQLite;
 import Model.Product;
 import java.util.ArrayList;
@@ -191,29 +192,39 @@ public class MgmtProduct extends javax.swing.JPanel {
     }//GEN-LAST:event_purchaseBtnActionPerformed
 
     private void addBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBtnActionPerformed
-        JTextField nameFld = new JTextField();
-        JTextField stockFld = new JTextField();
-        JTextField priceFld = new JTextField();
 
-        designer(nameFld, "PRODUCT NAME");
-        designer(stockFld, "PRODUCT STOCK");
-        designer(priceFld, "PRODUCT PRICE");
+        int userRole = SessionManager.getCurrentUserRole();
 
-        Object[] message = {
-            "Insert New Product Details:", nameFld, stockFld, priceFld
-        };
+        if (userRole == 3 || userRole == 4) {
+            JTextField nameFld = new JTextField();
+            JTextField stockFld = new JTextField();
+            JTextField priceFld = new JTextField();
 
-        int result = JOptionPane.showConfirmDialog(null, message, "ADD PRODUCT", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null);
+            designer(nameFld, "PRODUCT NAME");
+            designer(stockFld, "PRODUCT STOCK");
+            designer(priceFld, "PRODUCT PRICE");
 
-        if (result == JOptionPane.OK_OPTION) {
-            System.out.println(nameFld.getText());
-            System.out.println(stockFld.getText());
-            System.out.println(priceFld.getText());
+            Object[] message = {
+                "Insert New Product Details:", nameFld, stockFld, priceFld
+            };
+
+            int result = JOptionPane.showConfirmDialog(null, message, "ADD PRODUCT", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null);
+
+            if (result == JOptionPane.OK_OPTION) {
+                System.out.println(nameFld.getText());
+                System.out.println(stockFld.getText());
+                System.out.println(priceFld.getText());
+            }
+        }else {
+            // Show error message if the user does not have permission
+            JOptionPane.showMessageDialog(null, "Access Denied: Only staff and managers can add products.", "Permission Denied", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_addBtnActionPerformed
 
     private void editBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editBtnActionPerformed
-        if(table.getSelectedRow() >= 0){
+        int userRole = SessionManager.getCurrentUserRole();
+
+        if (userRole == 3 || userRole == 4) {
             JTextField nameFld = new JTextField(tableModel.getValueAt(table.getSelectedRow(), 0) + "");
             JTextField stockFld = new JTextField(tableModel.getValueAt(table.getSelectedRow(), 1) + "");
             JTextField priceFld = new JTextField(tableModel.getValueAt(table.getSelectedRow(), 2) + "");
@@ -233,15 +244,26 @@ public class MgmtProduct extends javax.swing.JPanel {
                 System.out.println(stockFld.getText());
                 System.out.println(priceFld.getText());
             }
+        } else {
+            JOptionPane.showMessageDialog(null, "Access Denied: Only staff and managers can edit products.", "Permission Denied", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_editBtnActionPerformed
 
     private void deleteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBtnActionPerformed
         if(table.getSelectedRow() >= 0){
-            int result = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete " + tableModel.getValueAt(table.getSelectedRow(), 0) + "?", "DELETE PRODUCT", JOptionPane.YES_NO_OPTION);
-            
-            if (result == JOptionPane.YES_OPTION) {
-                System.out.println(tableModel.getValueAt(table.getSelectedRow(), 0));
+            int userRole = SessionManager.getCurrentUserRole();
+
+            if (userRole == 3 || userRole == 4) {
+                int result = JOptionPane.showConfirmDialog(null, 
+                    "Are you sure you want to delete " + tableModel.getValueAt(table.getSelectedRow(), 0) + "?", "DELETE PRODUCT", 
+                    JOptionPane.YES_NO_OPTION);
+
+                if (result == JOptionPane.YES_OPTION) {
+                    System.out.println("Deleted: " + tableModel.getValueAt(table.getSelectedRow(), 0));
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, 
+                    "Access Denied: Only staff and managers can delete products.", "Permission Denied", JOptionPane.ERROR_MESSAGE);
             }
         }
     }//GEN-LAST:event_deleteBtnActionPerformed

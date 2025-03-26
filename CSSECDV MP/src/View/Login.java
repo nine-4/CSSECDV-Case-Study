@@ -1,6 +1,8 @@
 
 package View;
 
+import Controller.SessionManager;
+import Model.User;
 import javax.swing.*;
 
 public class Login extends javax.swing.JPanel {
@@ -124,14 +126,23 @@ public class Login extends javax.swing.JPanel {
     
         // successful login
         if (loginResponse.equals("SUCCESS")) {
-            int role = frame.main.getRoleFromUsername(username);
-            
-            frame.loginPnl.errorMessage.setText("");
-            jPane.showMessageDialog(this, "Login Successful!");
-            frame.mainNav(role);
+        // Get user details
+        User user = frame.main.getUserFromUsername(username); // Create this function if needed
+
+        if (user != null) {
+            SessionManager.setCurrentUser(user); // Store user in session
+            System.out.println("Logged in as: " + SessionManager.getCurrentUsername());
+        }
+
+        int role = user.getRole(); 
+    
+        frame.loginPnl.errorMessage.setText("");
+        JOptionPane.showMessageDialog(this, "Login Successful!");
+        frame.mainNav(role);
         } else {
             frame.loginPnl.errorMessage.setText(loginResponse);
         }
+
         
         // makes sure that fields are resetted every time
         frame.loginPnl.usernameFld.setText("");
