@@ -6,6 +6,7 @@
 package View;
 
 import Controller.SQLite;
+import Controller.SessionManager;
 import Model.History;
 import Model.Product;
 import java.util.ArrayList;
@@ -45,19 +46,44 @@ public class MgmtHistory extends javax.swing.JPanel {
             tableModel.removeRow(0);
         }
         
+
 //      LOAD CONTENTS
         ArrayList<History> history = sqlite.getHistory();
-        for(int nCtr = 0; nCtr < history.size(); nCtr++){
-            Product product = sqlite.getProduct(history.get(nCtr).getName());
-            tableModel.addRow(new Object[]{
-                history.get(nCtr).getUsername(), 
-                history.get(nCtr).getName(), 
-                history.get(nCtr).getStock(), 
-                product.getPrice(), 
-                product.getPrice() * history.get(nCtr).getStock(), 
-                history.get(nCtr).getTimestamp()
-            });
+        
+        int userRole = SessionManager.getCurrentUserRole();
+        String userUsername = SessionManager.getCurrentUsername();
+        if (userRole <= 2){ // if user is a client
+            searchBtn.setText("SEARCH PRODUCT");
+            for (History hist: history){
+                Product product = sqlite.getProduct(hist.getName());
+                if (hist.getUsername().equals(userUsername)){ // only displays product bought by client
+                    tableModel.addRow(new Object[]{
+                        hist.getUsername(), 
+                        hist.getName(), 
+                        hist.getStock(), 
+                        product.getPrice(), 
+                        product.getPrice() * hist.getStock(), 
+                        hist.getTimestamp()
+                    });
+                }
+                
+            }
         }
+        
+        else{
+            for(int nCtr = 0; nCtr < history.size(); nCtr++){
+                Product product = sqlite.getProduct(history.get(nCtr).getName());
+                tableModel.addRow(new Object[]{
+                    history.get(nCtr).getUsername(), 
+                    history.get(nCtr).getName(), 
+                    history.get(nCtr).getStock(), 
+                    product.getPrice(), 
+                    product.getPrice() * history.get(nCtr).getStock(), 
+                    history.get(nCtr).getTimestamp()
+                });
+            }
+        }
+        
     }
     
     public void designer(JTextField component, String text){
@@ -176,23 +202,50 @@ public class MgmtHistory extends javax.swing.JPanel {
 
 //          LOAD CONTENTS
             ArrayList<History> history = sqlite.getHistory();
-            for(int nCtr = 0; nCtr < history.size(); nCtr++){
+            
+            
+            int userRole = SessionManager.getCurrentUserRole();
+            String userUsername = SessionManager.getCurrentUsername();
+            if (userRole <= 2){ // if user is a client
+                for (History hist: history){
+                    if( searchFld.getText().contains(hist.getName()) || 
+                        hist.getName().contains(searchFld.getText())){ // only product name is searchable
+                        
+                        Product product = sqlite.getProduct(hist.getName());
+                        if (hist.getUsername().equals(userUsername)){ // only displays product bought by client
+                            tableModel.addRow(new Object[]{
+                                hist.getUsername(), 
+                                hist.getName(), 
+                                hist.getStock(), 
+                                product.getPrice(), 
+                                product.getPrice() * hist.getStock(), 
+                                hist.getTimestamp()
+                            });
+                        }
+                    }
+                }
+            }
+            
+            else{
+                for(int nCtr = 0; nCtr < history.size(); nCtr++){
                 if(searchFld.getText().contains(history.get(nCtr).getUsername()) || 
                    history.get(nCtr).getUsername().contains(searchFld.getText()) || 
                    searchFld.getText().contains(history.get(nCtr).getName()) || 
-                   history.get(nCtr).getName().contains(searchFld.getText())){
+                   history.get(nCtr).getName().contains(searchFld.getText())){ // product name and username can be searched
                 
-                    Product product = sqlite.getProduct(history.get(nCtr).getName());
-                    tableModel.addRow(new Object[]{
-                        history.get(nCtr).getUsername(), 
-                        history.get(nCtr).getName(), 
-                        history.get(nCtr).getStock(), 
-                        product.getPrice(), 
-                        product.getPrice() * history.get(nCtr).getStock(), 
-                        history.get(nCtr).getTimestamp()
-                    });
+                        Product product = sqlite.getProduct(history.get(nCtr).getName());
+                        tableModel.addRow(new Object[]{
+                            history.get(nCtr).getUsername(), 
+                            history.get(nCtr).getName(), 
+                            history.get(nCtr).getStock(), 
+                            product.getPrice(), 
+                            product.getPrice() * history.get(nCtr).getStock(), 
+                            history.get(nCtr).getTimestamp()
+                        });
+                    }
                 }
             }
+            
         }
     }//GEN-LAST:event_searchBtnActionPerformed
 
