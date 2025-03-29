@@ -134,7 +134,7 @@ public class Main {
                 else {
                     failedAttempts++;
                     if (failedAttempts >= MAX_ATTEMPTS || user.getLocked() == 1) {
-                        sqlite.lockUser(username, 1, -1);
+                        sqlite.lockUser(username, 1);
                         return "Too many failed attempts. Account locked. Reach out to the admin to unlock your account";
                     }
                 return "Username/password is incorrect!";
