@@ -200,6 +200,9 @@ public class MgmtHistory extends javax.swing.JPanel {
             for(int nCtr = tableModel.getRowCount(); nCtr > 0; nCtr--){
                 tableModel.removeRow(0);
             }
+            
+            // sanitizes input field/s to avoid injection attacks
+            String sanitized_searchFld = searchFld.getText().replaceAll("[<>\"'%;()&]", "");
 
 //          LOAD CONTENTS
             ArrayList<History> history = sqlite.getHistory();
@@ -209,8 +212,8 @@ public class MgmtHistory extends javax.swing.JPanel {
             String userUsername = SessionManager.getCurrentUsername();
             if (userRole <= 2){ // if user is a client
                 for (History hist: history){
-                    if( searchFld.getText().contains(hist.getName()) || 
-                        hist.getName().contains(searchFld.getText())){ // only product name is searchable
+                    if( sanitized_searchFld.contains(hist.getName()) || 
+                        hist.getName().contains(sanitized_searchFld)){ // only product name is searchable
                         
                         Product product = sqlite.getProduct(hist.getName());
                         if (hist.getUsername().equals(userUsername)){ // only displays product bought by client
@@ -229,10 +232,10 @@ public class MgmtHistory extends javax.swing.JPanel {
             
             else{
                 for(int nCtr = 0; nCtr < history.size(); nCtr++){
-                if(searchFld.getText().contains(history.get(nCtr).getUsername()) || 
-                   history.get(nCtr).getUsername().contains(searchFld.getText()) || 
-                   searchFld.getText().contains(history.get(nCtr).getName()) || 
-                   history.get(nCtr).getName().contains(searchFld.getText())){ // product name and username can be searched
+                if(sanitized_searchFld.contains(history.get(nCtr).getUsername()) || 
+                   history.get(nCtr).getUsername().contains(sanitized_searchFld) || 
+                   sanitized_searchFld.contains(history.get(nCtr).getName()) || 
+                   history.get(nCtr).getName().contains(sanitized_searchFld)){ // product name and username can be searched
                 
                         Product product = sqlite.getProduct(history.get(nCtr).getName());
                         tableModel.addRow(new Object[]{

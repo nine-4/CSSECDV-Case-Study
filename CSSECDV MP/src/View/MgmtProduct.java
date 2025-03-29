@@ -200,8 +200,11 @@ public class MgmtProduct extends javax.swing.JPanel {
 
             int result = JOptionPane.showConfirmDialog(null, message, "PURCHASE PRODUCT", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null);
 
+            // sanitizes input field/s to avoid injection attacks
+            String sanitized_stockFld = stockFld.getText().replaceAll("[<>\"'%;()&]", "");
+            
             if (result == JOptionPane.OK_OPTION) {
-                System.out.println(stockFld.getText());
+                System.out.println(sanitized_stockFld);
             }
         }
     }//GEN-LAST:event_purchaseBtnActionPerformed
@@ -222,10 +225,15 @@ public class MgmtProduct extends javax.swing.JPanel {
 
         int result = JOptionPane.showConfirmDialog(null, message, "ADD PRODUCT", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null);
 
+        // sanitizes input field/s to avoid injection attacks
+        String sanitized_nameFld = nameFld.getText().replaceAll("[<>\"'%;()&]", "");
+        String sanitized_stockFld = stockFld.getText().replaceAll("[<>\"'%;()&]", "");
+        String sanitized_priceFld = priceFld.getText().replaceAll("[<>\"'%;()&]", "");
+        
         if (result == JOptionPane.OK_OPTION) {
-            System.out.println(nameFld.getText());
-            System.out.println(stockFld.getText());
-            System.out.println(priceFld.getText());
+            System.out.println(sanitized_nameFld);
+            System.out.println(sanitized_stockFld);
+            System.out.println(sanitized_priceFld);
         }
         
     }//GEN-LAST:event_addBtnActionPerformed
@@ -247,17 +255,21 @@ public class MgmtProduct extends javax.swing.JPanel {
 
         int result = JOptionPane.showConfirmDialog(null, message, "EDIT PRODUCT", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null);
 
+        // sanitizes input field/s to avoid injection attacks
+        String sanitized_nameFld = nameFld.getText().replaceAll("[<>\"'%;()&]", "");
+        String sanitized_stockFld = stockFld.getText().replaceAll("[<>\"'%;()&]", "");
+        String sanitized_priceFld = priceFld.getText().replaceAll("[<>\"'%;()&]", "");
+        
         if (result == JOptionPane.OK_OPTION) {
-            System.out.println(nameFld.getText());
-            System.out.println(stockFld.getText());
-            System.out.println(priceFld.getText());
+            System.out.println(sanitized_nameFld);
+            System.out.println(sanitized_stockFld);
+            System.out.println(sanitized_priceFld);
         }
     }//GEN-LAST:event_editBtnActionPerformed
 
     private void deleteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBtnActionPerformed
         SessionManager.resetSessionTimer();
         if(table.getSelectedRow() >= 0){
-            int userRole = SessionManager.getCurrentUserRole();
 
             int result = JOptionPane.showConfirmDialog(null, 
             "Are you sure you want to delete " + tableModel.getValueAt(table.getSelectedRow(), 0) + "?", "DELETE PRODUCT", 

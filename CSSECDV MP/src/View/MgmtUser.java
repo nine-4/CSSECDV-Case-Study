@@ -238,9 +238,13 @@ public class MgmtUser extends javax.swing.JPanel {
 
             int result = JOptionPane.showConfirmDialog(null, message, "CHANGE PASSWORD", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null);
             
+            // sanitizes input field/s to avoid injection attacks
+            String sanitized_password = password.getText().replaceAll("[<>\"'%;()&]", "");
+            String sanitized_confpass = confpass.getText().replaceAll("[<>\"'%;()&]", "");
+            
             if (result == JOptionPane.OK_OPTION) {
-                System.out.println(password.getText());
-                System.out.println(confpass.getText());
+                System.out.println(sanitized_password);
+                System.out.println(sanitized_confpass);
             }
         }
     }//GEN-LAST:event_chgpassBtnActionPerformed
