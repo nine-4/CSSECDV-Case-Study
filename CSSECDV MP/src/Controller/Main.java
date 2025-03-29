@@ -23,9 +23,7 @@ public class Main {
     
     public SQLite sqlite;
     private int failedAttempts = 0;
-    private long lockoutTimestamp = 0;
     private static final int MAX_ATTEMPTS = 5;
-    private static final long LOCKOUT_DURATION = 1 * 60 * 1000;
     
     public static void main(String[] args) {
         new Main().init();
@@ -124,28 +122,20 @@ public class Main {
     }
     
     public String validateLogin(String username, String password) {
-        long currentTime = System.currentTimeMillis();
+        
 
         ArrayList<User> users = sqlite.getUsers();
         for (User user : users) {
             if (user.getUsername().equals(username)) {
-                if (failedAttempts >= MAX_ATTEMPTS) {
-                    if (currentTime - lockoutTimestamp < LOCKOUT_DURATION) {
-                        return "Too many failed attempts. Account locked for 5 minutes.";
-                    }  else {
-                        failedAttempts = 0; // Reset after lockout time has passed
-                    }
-                }
-                
-                if (user.getPassword().equals(password)) {
+                if (user.getPassword().equals(password) && user.getLocked() == 0) {
                     failedAttempts = 0; // Reset on successful login
                     return "SUCCESS"; // Indicate a successful login
                 } 
                 else {
                     failedAttempts++;
-                    if (failedAttempts >= MAX_ATTEMPTS) {
-                        lockoutTimestamp = currentTime;
-                        return "Too many failed attempts. Account locked for 5 minutes.";
+                    if (failedAttempts >= MAX_ATTEMPTS || user.getLocked() == 1) {
+                        sqlite.lockUser(username, 1, -1);
+                        return "Too many failed attempts. Account locked. Reach out to the admin to unlock your account";
                     }
                 return "Username/password is incorrect!";
                 }

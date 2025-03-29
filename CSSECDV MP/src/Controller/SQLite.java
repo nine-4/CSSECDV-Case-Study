@@ -317,4 +317,15 @@ public class SQLite {
         }
         return product;
     }
+
+    public void lockUser(String username, int locked, int role) {
+        String query = "UPDATE users SET locked = '"+ locked +"', role = '"+ role +"' WHERE username = '"+ username +"'";
+        try (Connection conn = DriverManager.getConnection(driverURL);
+             Statement stmt = conn.createStatement()) {
+            stmt.execute(query);
+            System.out.println("User " + username + " is locked.");
+        } catch (Exception ex) {
+            System.out.print(ex);
+        }
+    }
 }
