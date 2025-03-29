@@ -6,6 +6,7 @@
 package View;
 
 import Controller.SessionManager;
+import View.Frame;
 import Controller.SQLite;
 import Model.Product;
 import java.util.ArrayList;
@@ -188,6 +189,7 @@ public class MgmtProduct extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void purchaseBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_purchaseBtnActionPerformed
+        SessionManager.resetSessionTimer();
         if(table.getSelectedRow() >= 0){
             JTextField stockFld = new JTextField("0");
             designer(stockFld, "PRODUCT STOCK");
@@ -205,7 +207,7 @@ public class MgmtProduct extends javax.swing.JPanel {
     }//GEN-LAST:event_purchaseBtnActionPerformed
 
     private void addBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBtnActionPerformed
-
+        SessionManager.resetSessionTimer();
         JTextField nameFld = new JTextField();
         JTextField stockFld = new JTextField();
         JTextField priceFld = new JTextField();
@@ -229,7 +231,7 @@ public class MgmtProduct extends javax.swing.JPanel {
     }//GEN-LAST:event_addBtnActionPerformed
 
     private void editBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editBtnActionPerformed
-
+        SessionManager.resetSessionTimer();
 
         JTextField nameFld = new JTextField(tableModel.getValueAt(table.getSelectedRow(), 0) + "");
         JTextField stockFld = new JTextField(tableModel.getValueAt(table.getSelectedRow(), 1) + "");
@@ -253,6 +255,7 @@ public class MgmtProduct extends javax.swing.JPanel {
     }//GEN-LAST:event_editBtnActionPerformed
 
     private void deleteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBtnActionPerformed
+        SessionManager.resetSessionTimer();
         if(table.getSelectedRow() >= 0){
             int userRole = SessionManager.getCurrentUserRole();
 

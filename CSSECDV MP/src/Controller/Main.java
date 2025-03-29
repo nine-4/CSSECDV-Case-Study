@@ -9,6 +9,9 @@ import View.Frame;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
+import javax.swing.Timer;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener; 
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -26,6 +29,10 @@ public class Main {
     
     public static void main(String[] args) {
         new Main().init();
+        Frame mainFrame = Frame.getInstance(); // Start main UI
+        mainFrame.setVisible(true);
+
+        startSessionChecker();
     }
     
     public void init(){
@@ -197,5 +204,17 @@ public class Main {
         }
     
         return null;
+    }
+    
+    private static void startSessionChecker() {
+        Timer sessionTimer = new Timer(5000, new ActionListener() { // Check every 5 seconds
+            public void actionPerformed(ActionEvent e) {
+                if (SessionManager.isSessionExpired()) {
+                    SessionManager.logout();
+                    Frame.getInstance().redirectToLogin();
+                }
+            }
+        });
+        sessionTimer.start(); // Start the timer
     }
 }

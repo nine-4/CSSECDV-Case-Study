@@ -4,12 +4,19 @@
  */
 package Controller;
 import Model.User;
+import View.Frame;
+import java.awt.AWTEvent;
+import java.awt.Container;
+import java.awt.event.*;
+import java.awt.Toolkit;
 /**
  *
  * @author Martin
  */
 public class SessionManager {
-     private static User currentUser; // Stores the logged-in user
+     private static User currentUser;
+     private static long lastActivityTime;
+     private static final long TIMEOUT_DURATION = 15 * 60 * 1000;
 
     // Set the current logged-in user
     public static void setCurrentUser(User user) {
@@ -18,6 +25,10 @@ public class SessionManager {
 
     // Get the logged-in user
     public static User getCurrentUser() {
+        if (isSessionExpired()) {
+            logout(); 
+            return null;
+        }
         return currentUser;
     }
 
@@ -35,6 +46,17 @@ public class SessionManager {
     public static void logout() {
         currentUser = null;
     }
-}
     
+    public static void resetSessionTimer() {
+        lastActivityTime = System.currentTimeMillis(); // Update last activity time
+    }
 
+    public static boolean isSessionExpired() {
+        return (System.currentTimeMillis() - lastActivityTime) > TIMEOUT_DURATION;
+    }
+    
+    static {
+        Toolkit.getDefaultToolkit().addAWTEventListener(event -> resetSessionTimer(),
+            AWTEvent.KEY_EVENT_MASK | AWTEvent.MOUSE_EVENT_MASK);
+    }
+}

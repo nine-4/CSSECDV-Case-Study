@@ -6,6 +6,7 @@
 package View;
 
 import Controller.SQLite;
+import Controller.SessionManager;
 import Model.Logs;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
@@ -135,10 +136,11 @@ public class MgmtLogs extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void clearBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearBtnActionPerformed
-        
+        SessionManager.resetSessionTimer();
     }//GEN-LAST:event_clearBtnActionPerformed
 
     private void debugBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_debugBtnActionPerformed
+        SessionManager.resetSessionTimer();
         if(sqlite.DEBUG_MODE == 1)
             sqlite.DEBUG_MODE = 0;
         else

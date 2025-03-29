@@ -8,7 +8,10 @@ import javax.swing.WindowConstants;
 
 public class Frame extends javax.swing.JFrame {
 
+    private static Frame instance;
+        
     public Frame() {
+        instance = this; 
         initComponents();
     }
 
@@ -288,6 +291,15 @@ public class Frame extends javax.swing.JFrame {
     public void registerAction(String username, String password, String confpass){
         main.sqlite.addUser(username, password);
     }
+    
+    public static Frame getInstance(){
+        return instance;
+    }
+    
+    public void redirectToLogin(){
+        loginNav();
+    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Container;
